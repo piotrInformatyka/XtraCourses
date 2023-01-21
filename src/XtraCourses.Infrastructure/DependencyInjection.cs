@@ -11,12 +11,11 @@ namespace XtraCourses.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<XtraDataClient>();
-
             //EF
             services.AddHostedService<DatabaseInitializer>();
             services.AddDbContext<DataContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("SqliteConnection")));
+                options.UseSqlite(configuration.GetConnectionString("SqliteConnection"),
+                    x => x.MigrationsAssembly(typeof(DataContext).Assembly.FullName)));
 
             return services;
         }

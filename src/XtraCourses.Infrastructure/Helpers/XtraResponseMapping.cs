@@ -7,12 +7,15 @@ namespace XtraCourses.Infrastructure.Helpers
 {
     public static class XtraResponseMapping
     {
-        public static (IEnumerable<User>, IEnumerable<Course>, IEnumerable<Project>) MapExtraResponse(IEnumerable<XtraResponseModel> inputProjects)
+        public static (IEnumerable<User>, IEnumerable<Course>, IEnumerable<Project>) MapXtraResponse(IEnumerable<XtraResponseModel> inputProjects)
         {
+            //inputProjects = inputProjects.GroupBy(x => x.ProjectId).Select(x => x.First()); duplicated
+
             var users = inputProjects.GroupBy(x => x.Person)
                 .Select(y => y.First())
                 .Select(u => new User()
                 {
+                    Person = u.Person,
                     Department = u.Department,
                     Email = u.Email,
                     ImportTag = u.ImportTag,
@@ -20,6 +23,7 @@ namespace XtraCourses.Infrastructure.Helpers
                     Mobile = u.Mobile,
                     Upn = u.Upn
                 });
+
             var courses = inputProjects.GroupBy(x => x.CourseId)
                 .Select(y => y.First())
                 .Select(c => new Course()
@@ -32,6 +36,7 @@ namespace XtraCourses.Infrastructure.Helpers
             {
                 ProjectId = x.ProjectId,
                 ProjectName = x.Project,
+                CourseId = x.CourseId,
                 ProjectDetails = new ProjectDetails()
                 {
                     CertificateTitle = x.CertificateTitle,
