@@ -41,6 +41,10 @@ namespace XtraCourses.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PersonId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("TEXT");
 
@@ -49,6 +53,10 @@ namespace XtraCourses.Infrastructure.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Projects");
                 });
@@ -84,6 +92,18 @@ namespace XtraCourses.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("XtraCourses.Application.Models.Project", b =>
                 {
+                    b.HasOne("XtraCourses.Application.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XtraCourses.Application.Models.User", "User")
+                        .WithMany("Projects")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("XtraCourses.Application.ValueObject.ProjectDetails", "ProjectDetails", b1 =>
                         {
                             b1.Property<Guid>("ProjectId")
@@ -157,8 +177,17 @@ namespace XtraCourses.Infrastructure.Persistence.Migrations
                                 .HasForeignKey("ProjectId");
                         });
 
+                    b.Navigation("Course");
+
                     b.Navigation("ProjectDetails")
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("XtraCourses.Application.Models.User", b =>
+                {
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

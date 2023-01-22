@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using XtraCourses.Application.Models;
+using XtraCourses.Application.Entities;
 
 namespace XtraCourses.Infrastructure.Persistence.Configuration
 {

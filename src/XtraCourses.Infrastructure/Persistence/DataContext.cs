@@ -1,17 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using XtraCourses.Application.Models;
+using XtraCourses.Application.Abstractions;
+using XtraCourses.Application.Entities;
 
 namespace XtraCourses.Infrastructure.Persistence
 {
-    public class DataContext : DbContext
+    public class DataContext : DbContext, IDataContext
     {
         public DataContext()
         {
-
         }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
         }
 
         public virtual DbSet<User> Users { get; set; }

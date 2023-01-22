@@ -11,8 +11,8 @@ using XtraCourses.Infrastructure.Persistence;
 namespace XtraCourses.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230121221005_Add new ID in Project")]
-    partial class AddnewIDinProject
+    [Migration("20230121224214_Add relationships")]
+    partial class Addrelationships
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,10 @@ namespace XtraCourses.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PersonId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("TEXT");
 
@@ -52,6 +56,10 @@ namespace XtraCourses.Infrastructure.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Projects");
                 });
@@ -62,7 +70,6 @@ namespace XtraCourses.Infrastructure.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Department")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -70,19 +77,15 @@ namespace XtraCourses.Infrastructure.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImportTag")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Location")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Mobile")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Upn")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Person");
@@ -92,73 +95,79 @@ namespace XtraCourses.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("XtraCourses.Application.Models.Project", b =>
                 {
+                    b.HasOne("XtraCourses.Application.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XtraCourses.Application.Models.User", "User")
+                        .WithMany("Projects")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("XtraCourses.Application.ValueObject.ProjectDetails", "ProjectDetails", b1 =>
                         {
                             b1.Property<Guid>("ProjectId")
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CertificateTitle")
-                                .IsRequired()
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("TEXT")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("CompletedDate")
-                                .IsRequired()
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("TEXT")
                                 .HasDefaultValue("");
 
-                            b1.Property<int>("CompletedLessonsCount")
+                            b1.Property<int?>("CompletedLessonsCount")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("INTEGER")
                                 .HasDefaultValue(0);
 
                             b1.Property<string>("CourseStartedDate")
-                                .IsRequired()
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("TEXT")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("HaveNotStarted")
-                                .IsRequired()
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("TEXT")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("HaveStarted")
-                                .IsRequired()
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("TEXT")
                                 .HasDefaultValue("");
 
-                            b1.Property<bool>("IsPassed")
+                            b1.Property<bool?>("IsPassed")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("INTEGER")
                                 .HasDefaultValue(false);
 
                             b1.Property<string>("NotOnSchedule")
-                                .IsRequired()
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("TEXT")
                                 .HasDefaultValue("");
 
-                            b1.Property<int>("OpenedLessonsCount")
+                            b1.Property<int?>("OpenedLessonsCount")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("INTEGER")
                                 .HasDefaultValue(0);
 
-                            b1.Property<int>("QuizScore")
+                            b1.Property<int?>("QuizScore")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("INTEGER")
                                 .HasDefaultValue(0);
 
-                            b1.Property<int>("QuizScoreTotal")
+                            b1.Property<int?>("QuizScoreTotal")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("INTEGER")
                                 .HasDefaultValue(0);
 
-                            b1.Property<int>("TotalLessonsCount")
+                            b1.Property<int?>("TotalLessonsCount")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("INTEGER")
                                 .HasDefaultValue(0);
@@ -171,8 +180,17 @@ namespace XtraCourses.Infrastructure.Persistence.Migrations
                                 .HasForeignKey("ProjectId");
                         });
 
+                    b.Navigation("Course");
+
                     b.Navigation("ProjectDetails")
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("XtraCourses.Application.Models.User", b =>
+                {
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

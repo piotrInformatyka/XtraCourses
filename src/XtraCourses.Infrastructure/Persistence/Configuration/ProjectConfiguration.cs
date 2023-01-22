@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using XtraCourses.Application.Models;
+using XtraCourses.Application.Entities;
 
 namespace XtraCourses.Infrastructure.Persistence.Configuration
 {
@@ -23,6 +23,10 @@ namespace XtraCourses.Infrastructure.Persistence.Configuration
                 sb.Property(x => x.QuizScoreTotal).HasDefaultValue(0);
                 sb.Property(x => x.IsPassed).HasDefaultValue(false);
             });
+
+            builder.HasOne(x => x.User)
+                .WithMany(x => x.Projects)
+                .HasForeignKey(x => x.PersonId);
         }
     }
 }

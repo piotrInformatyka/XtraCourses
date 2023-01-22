@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XtraCourses.Application.Models
+﻿namespace XtraCourses.Application.Entities
 {
     public class User
     {
@@ -15,5 +9,6 @@ namespace XtraCourses.Application.Models
         public string? Location { get; set; }
         public string? ImportTag { get; set; }
         public string? Mobile { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

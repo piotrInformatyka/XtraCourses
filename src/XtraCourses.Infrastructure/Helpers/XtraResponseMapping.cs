@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using XtraCourses.Application.Models;
+using XtraCourses.Application.Entities;
 using XtraCourses.Application.ValueObject;
 using XtraCourses.Infrastructure.Models;
 
@@ -37,6 +37,7 @@ namespace XtraCourses.Infrastructure.Helpers
                 ProjectId = x.ProjectId,
                 ProjectName = x.Project,
                 CourseId = x.CourseId,
+                PersonId = x.Person,
                 ProjectDetails = new ProjectDetails()
                 {
                     CertificateTitle = x.CertificateTitle,
