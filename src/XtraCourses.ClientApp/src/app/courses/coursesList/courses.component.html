@@ -1,0 +1,10 @@
+<div class="courses-wrapper">
+    <ul class="list-group courses-list col-6">
+            <li class="list-group-item"  *ngFor="let course of courses" (click)="chooseCourse(course.courseId)">
+                {{course.courseName}} 
+            </li>
+    </ul>
+    <div class="courses-details col-6">
+        <app-course-details [courseDetails]="courseDetails"></app-course-details>
+    </div>
+</div>

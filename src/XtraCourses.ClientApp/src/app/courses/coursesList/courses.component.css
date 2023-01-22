@@ -1,0 +1,13 @@
+.courses-wrapper {
+  display: flex;
+}
+
+.courses-list {
+  cursor: pointer;
+  text-align: center;
+  margin: 2em;
+}
+
+.list-group-item:hover{
+  background-color: lightblue;
+}

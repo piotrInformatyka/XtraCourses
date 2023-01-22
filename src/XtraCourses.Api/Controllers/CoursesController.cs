@@ -4,7 +4,6 @@ using XtraCourses.Application.Abstractions;
 namespace XtraCourses.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class CoursesController : ControllerBase
     {
         private readonly ILogger<CoursesController> _logger;
@@ -16,13 +15,13 @@ namespace XtraCourses.WebApi.Controllers
             _courseService = courseService;
         }
 
-        [HttpGet("GetCourses")]
+        [HttpGet("courses")]
         public async Task<IActionResult> GetCourses()
             => Ok(await _courseService.GetCourses());
 
-        [HttpGet("GetCourseDetails/{userId}")]
-        public async Task<IActionResult> GetCourseDetails(Guid userId)
-            => Ok(await _courseService.GetCourseDetails(userId));
+        [HttpGet("courses/{courseId}")]
+        public async Task<IActionResult> GetCourseDetails(Guid courseId)
+            => Ok(await _courseService.GetCourseDetails(courseId));
     }
     
 }
